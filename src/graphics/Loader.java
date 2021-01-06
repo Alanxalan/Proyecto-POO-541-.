@@ -11,13 +11,15 @@ import javax.sound.sampled.Clip;
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.UnsupportedAudioFileException;
 
+/*  Esta clase se encargara de cargar imagenes,sonidos y recursos externos que agreguemos.  */
+
 public class Loader {
-	
-    public static BufferedImage ImageLoader(String path) {
+    //BefferedImage es como java guarda imagenes en memoria.
+    public static BufferedImage ImageLoader(String path) {  //String path es la ruta de la imagen.
 	try {
-            return ImageIO.read(Loader.class.getResource(path));
+            return ImageIO.read(Loader.class.getResource(path));    //Se pasa la ruta.
 	} catch (IOException e) {
-            e.printStackTrace();
+            e.printStackTrace();    //Nos imprime si hay un error en la carga de la imagen.
 	}
 	return null;
     }

@@ -1,11 +1,11 @@
 package gameObjects;
 
-import graphics.Assets;
-import static graphics.Assets.explosion;
-import graphics.Sound;
 import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
+
+import graphics.Assets;
+import graphics.Sound;
 import math.Vector2D;
 import states.GameState;
 
@@ -52,20 +52,38 @@ public abstract class MovingObject extends GameObject{
         }
     }
     
-    private void objectCollision(MovingObject a, MovingObject b){
-        if(a instanceof Player && ((Player)a).isSpawning()){
-            return;
-        }
-        if(b instanceof Player && ((Player)b).isSpawning()){
-            return;
-        }
-        
-        if(!(a instanceof Meteor && b instanceof Meteor)){
-            gameState.playExplosion(getCenter());
-            a.Destroy();
-            b.Destroy();
-        }
-    }
+    private void objectCollision(MovingObject a, MovingObject b) {
+		
+		Player p = null;
+		
+		if(a instanceof Player)
+			p = (Player)a;
+		else if(b instanceof Player)
+			p = (Player)b;
+		
+		if(p != null && p.isSpawning()) 
+			return;
+		
+		if(a instanceof Meteor && b instanceof Meteor)
+			return;
+		
+		if(!(a instanceof PowerUp || b instanceof PowerUp)){
+			a.Destroy();
+			b.Destroy();
+			return;
+		}
+		
+		if(p != null){
+			if(a instanceof Player){
+				((PowerUp)b).executeAction();
+				b.Destroy();
+			}else if(b instanceof Player){
+				((PowerUp)a).executeAction();
+				a.Destroy();
+			}
+		}
+		
+	}
     
     protected void Destroy(){
         Dead = true;

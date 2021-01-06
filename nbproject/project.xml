@@ -5,6 +5,7 @@
         <data xmlns="http://www.netbeans.org/ns/j2se-project/3">
             <name>SpaceX</name>
             <source-roots>
+                <root id="src.powers.dir"/>
                 <root id="src.ui.dir"/>
                 <root id="src.sounds.dir"/>
                 <root id="src.fonts.dir"/>

@@ -3,6 +3,7 @@ package input;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
+//Esta clase se encarga de todo lo que tenga que ver con el teclado y para esto debemos implementar la interfaz KeyListener.
 public class KeyBoard implements KeyListener{
 	
 	private boolean[] keys = new boolean[256];
@@ -25,14 +26,14 @@ public class KeyBoard implements KeyListener{
 		SHOOT = keys[KeyEvent.VK_Z];
 	}
 	
-	@Override
+	@Override   //Cada vez que se presione una tecla, se llamara a este metodo y la informacion qeu fue precionada se almacenara en el objeto KeyEvent.
 	public void keyPressed(KeyEvent e) {
-		keys[e.getKeyCode()] = true;
+            keys[e.getKeyCode()] = true;
 	}
 
-	@Override
+	@Override   //Se hace lo mismo que el metodo anterior solo que en este caso es al soltar la tecla.
 	public void keyReleased(KeyEvent e) {
-		keys[e.getKeyCode()] = false;
+            keys[e.getKeyCode()] = false;
 	}
 	
 	@Override

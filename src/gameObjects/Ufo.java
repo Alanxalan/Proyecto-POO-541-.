@@ -17,17 +17,17 @@ public class Ufo extends MovingObject{
     private Vector2D currentNode;
     private int index;
     private boolean following;
-    private Chronometer fireRate;
+    private long fireRate;
     private Sound shoot;
     
-    public Ufo(Vector2D position, Vector2D velocity, double maxVel, BufferedImage texture, ArrayList<Vector2D> path, GameState gameState) {
-        super(position, velocity, maxVel, texture, gameState);
-        this.path = path;
-        index = 0;
-        following = true;
-        fireRate = new Chronometer();
-        fireRate.run(Constants.UFO_FIRE_RATE);
-        shoot = new Sound(Assets.ufoShoot);
+    public Ufo(Vector2D position, Vector2D velocity, double maxVel, BufferedImage texture,
+			ArrayList<Vector2D> path, GameState gameState) {
+		super(position, velocity, maxVel, texture, gameState);
+		this.path = path;
+		index = 0;
+		following = true;
+		fireRate = 0;
+		shoot = new Sound(Assets.ufoShoot);
     }
     
     private Vector2D pathFollowing(){
@@ -52,7 +52,8 @@ public class Ufo extends MovingObject{
     }
     
     @Override
-    public void update() {
+    public void update(float dt) {
+        fireRate += dt;
         Vector2D pathFollowing;
         
         if(following)
@@ -69,7 +70,7 @@ public class Ufo extends MovingObject{
         if(position.getX() > Constants.WIDTH || position.getY() > Constants.HEIGHT || position.getX() < 0 || position.getY() < 0)
             Destroy();
         //shoot
-        if(!fireRate.isRunning()){
+        if(fireRate > Constants.UFO_FIRE_RATE){
             Vector2D toPlayer = gameState.getPlayer().getCenter().subtract(getCenter());
             toPlayer = toPlayer.normalize();
             
@@ -85,7 +86,7 @@ public class Ufo extends MovingObject{
             Laser laser = new Laser(getCenter().add(toPlayer.scale(width)), toPlayer, Constants.LASER_VEL, currentAngle + Math.PI/2, Assets.redLaser, gameState);
             
             gameState.getMovingObjects().add(0, laser);
-            fireRate.run(Constants.UFO_FIRE_RATE);
+            fireRate = 0;
             shoot.play();
         }
         
@@ -95,11 +96,11 @@ public class Ufo extends MovingObject{
         
         angle += 0.05;
         collidesWith();
-        fireRate.update();
     }
     @Override
     public void Destroy(){
         gameState.addScore(Constants.UFO_SCORE, position);
+        gameState.playExplosion(position);
         super.Destroy();
     }
 

@@ -9,7 +9,7 @@ public class Animation {
     private int index;
     private boolean running;
     private Vector2D position;
-    private long time, lastTime;
+    private long time;
     
     public Animation(BufferedImage[] frames, int velocity, Vector2D position){
         this.frames = frames;
@@ -17,14 +17,11 @@ public class Animation {
         this.position = position;
         index = 0;
         running = true;
-        time = 0;
-        lastTime = System.currentTimeMillis();
     }
     
     
-    public void update(){
-        time+= System.currentTimeMillis() - lastTime;
-        lastTime = System.currentTimeMillis();
+    public void update(float dt){
+        time+= dt;
         
         if(time > velocity){
             time = 0;
@@ -32,6 +29,7 @@ public class Animation {
             
             if(index >= frames.length){
                 running = false;
+                index = 0;
             }
         }
     }
